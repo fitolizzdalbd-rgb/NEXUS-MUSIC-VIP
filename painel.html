@@ -1,0 +1,248 @@
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b0b0f">
+<title>NEXUS MUSIC VIP</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #0b0b0f;
+  color: white;
+  font-family: Arial, sans-serif;
+  padding: 22px;
+}
+
+.container {
+  max-width: 440px;
+  margin: auto;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 15px 0 30px;
+}
+
+.logo {
+  color: #f0142f;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.status {
+  color: #31d68b;
+  font-size: 12px;
+}
+
+.card {
+  background: #15151c;
+  border: 1px solid #292933;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 18px;
+}
+
+.subtitle {
+  color: #9999a5;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+.days {
+  font-size: 34px;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.red {
+  color: #f0142f;
+}
+
+.divider {
+  height: 1px;
+  background: #303039;
+  margin: 17px 0;
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin: 16px 0 10px;
+}
+
+.progress {
+  height: 10px;
+  background: #34343c;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.bar {
+  width: 0%;
+  height: 100%;
+  background: #ed102d;
+  transition: width .3s;
+}
+
+.ad-button {
+  display: block;
+  width: 100%;
+  padding: 17px;
+  margin-top: 20px;
+  border: 0;
+  border-radius: 10px;
+  background: #e50925;
+  color: white;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.info {
+  color: #a0a0aa;
+  font-size: 12px;
+  line-height: 1.6;
+  margin-top: 12px;
+}
+
+.user {
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+footer {
+  text-align: center;
+  color: #777782;
+  font-size: 11px;
+  margin: 30px 0;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<header>
+  <div class="logo">♫ NEXUS MUSIC</div>
+  <div class="status">● ONLINE</div>
+</header>
+
+<section class="card">
+  <p class="subtitle">BEM-VINDO AO TEU PAINEL VIP</p>
+  <h2>Minha conta</h2>
+
+  <div class="divider"></div>
+
+  <p class="subtitle">ID DO WHATSAPP</p>
+  <p class="user" id="userId">A carregar...</p>
+
+  <div class="divider"></div>
+
+  <p class="subtitle">DIAS VIP DISPONÍVEIS</p>
+  <div class="days" id="days">-- dias</div>
+
+  <p class="subtitle" id="expiry">Validade: a consultar</p>
+</section>
+
+<section class="card">
+  <h3>🎁 Ganhar dias VIP grátis</h3>
+
+  <div class="progress-info">
+    <strong>Progresso dos anúncios</strong>
+    <strong id="count">0 / 10</strong>
+  </div>
+
+  <div class="progress">
+    <div class="bar" id="bar"></div>
+  </div>
+
+  <button class="ad-button" type="button" disabled>
+    ASSISTIR ANÚNCIO
+  </button>
+
+  <p class="info">
+    Completa 10 anúncios válidos para receber
+    mais 1 dia VIP gratuito.
+  </p>
+</section>
+
+<section class="card">
+  <h3>🎵 Serviços NEXUS</h3>
+  <div class="divider"></div>
+  <p>🎵 Música — <strong>.play</strong></p>
+  <br>
+  <p>🎬 Vídeos — <strong>.baixar</strong></p>
+  <p class="info">
+    O acesso aos serviços depende da validade
+    da tua conta VIP.
+  </p>
+</section>
+
+<footer>
+  NEXUS MUSIC © 2026<br>
+  O TEU ACESSO, A TUA LIBERDADE.
+</footer>
+
+</div>
+
+<script>
+const id = localStorage.getItem('nexus_user_id');
+const userElement = document.getElementById('userId');
+const daysElement = document.getElementById('days');
+const expiryElement = document.getElementById('expiry');
+
+if (!id || !/^[0-9]+$/.test(id)) {
+  window.location.href = '/';
+} else {
+  userElement.textContent = id;
+  consultarVIP();
+}
+
+async function consultarVIP() {
+  daysElement.textContent = 'A consultar...';
+  expiryElement.textContent = 'A verificar validade...';
+
+  try {
+    const resposta = await fetch('/api/vip?id=' + encodeURIComponent(id), {
+      cache: 'no-store'
+    });
+    const dados = await resposta.json();
+
+    if (!resposta.ok || !dados.sucesso) {
+      throw new Error(dados.erro || 'Erro na consulta.');
+    }
+
+    daysElement.textContent = dados.dias + (dados.dias === 1 ? ' dia' : ' dias');
+
+    if (dados.ativo && dados.expiraEm) {
+      const data = new Date(dados.expiraEm);
+      const formatada = new Intl.DateTimeFormat('pt-MZ', {
+        dateStyle: 'long',
+        timeStyle: 'short',
+        timeZone: 'Africa/Maputo'
+      }).format(data);
+
+      expiryElement.textContent = 'Validade até: ' + formatada;
+    } else {
+      expiryElement.textContent = 'VIP expirado ou inactivo.';
+    }
+  } catch (erro) {
+    console.error('Erro ao consultar VIP:', erro);
+    daysElement.textContent = '-- dias';
+    expiryElement.textContent = 'Não foi possível consultar. Tenta novamente.';
+  }
+}
+</script>
+
+</body>
+</html>
