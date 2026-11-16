@@ -121,6 +121,33 @@
       line-height: 1.5;
     }
 
+    .reward-button {
+      display: block;
+      width: 100%;
+      max-width: 380px;
+      margin: 22px auto 0;
+      padding: 16px;
+      border: 0;
+      border-radius: 10px;
+      background: #e50925;
+      color: #fff;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .reward-button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    #rewardStatus {
+      color: #aaa;
+      font-size: 13px;
+      line-height: 1.6;
+      margin-top: 15px;
+    }
+
     .back {
       display: block;
       text-align: center;
@@ -276,16 +303,28 @@
       </div>
     </div>
 
+    <!-- CONCLUSÃO -->
     <section class="finish-box" id="finishBox">
       <h2>CONTAGEM CONCLUÍDA!</h2>
       <p>O período de cinco minutos terminou.</p>
+
+      <button
+        type="button"
+        class="reward-button"
+        id="rewardButton">
+        GANHAR 1 DIA VIP
+      </button>
+
+      <p id="rewardStatus">
+        A confirmação da recompensa será activada após a ligação segura ao servidor.
+      </p>
     </section>
 
     <a class="back" href="/painel.html">
       VOLTAR AO PAINEL VIP
     </a>
 
-    <footer>NEXUS MUSIC VIP</footer>
+    <footer>NEXUS MUSIC VIP © 2026</footer>
 
   </main>
 
@@ -294,13 +333,16 @@
       const timer = document.getElementById('timer');
       const status = document.getElementById('status');
       const finishBox = document.getElementById('finishBox');
+      const rewardButton = document.getElementById('rewardButton');
+      const rewardStatus = document.getElementById('rewardStatus');
 
       const KEY = 'nexus_ad_remaining_seconds';
       const DURATION = 300;
 
-      let remaining = sessionStorage.getItem(KEY) === null
+      const saved = sessionStorage.getItem(KEY);
+      let remaining = saved === null
         ? DURATION
-        : Math.max(0, Number(sessionStorage.getItem(KEY)));
+        : Math.max(0, Math.min(DURATION, Number(saved) || 0));
 
       let lastTime = Date.now();
       let interval = null;
@@ -336,6 +378,7 @@
         }
 
         saveTime();
+
         status.textContent = remaining > 0
           ? 'Contagem suspensa. Volta para continuar.'
           : 'Contagem concluída!';
@@ -366,6 +409,18 @@
           }
         }, 250);
       }
+
+      rewardButton.addEventListener('click', function () {
+        const confirmar = window.confirm(
+          'Queres continuar com o pedido de recompensa de 1 dia VIP?'
+        );
+
+        if (!confirmar) return;
+
+        rewardStatus.textContent =
+          'O sistema de recompensa ainda está a ser ligado ao servidor. ' +
+          'Nenhum dia VIP foi acrescentado. Volta mais tarde.';
+      });
 
       document.addEventListener('visibilitychange', function () {
         if (document.hidden) {
