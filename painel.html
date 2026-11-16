@@ -166,9 +166,12 @@ footer {
     <div class="bar" id="bar"></div>
   </div>
 
-  <button class="ad-button" type="button" disabled>
+  <button class="ad-button" id="adButton" type="button">
     ASSISTIR ANÚNCIO
   </button>
+  <p class="info" id="adStatus" aria-live="polite">
+    Regressa ao painel para actualizar o contador.
+  </p>
 
   <p class="info">
     Completa 10 anúncios válidos para receber
@@ -242,6 +245,67 @@ async function consultarVIP() {
     expiryElement.textContent = 'Não foi possível consultar. Tenta novamente.';
   }
 }
+</script>
+
+
+<script>
+(function () {
+  const botao = document.getElementById('adButton');
+  const contador = document.getElementById('count');
+  const barra = document.getElementById('bar');
+  const estado = document.getElementById('adStatus');
+
+  if (!botao || !contador || !barra || !estado) return;
+
+  const chave = 'nexus_anuncios_contador';
+  const pendente = 'nexus_anuncio_pendente';
+
+  function obterContagem() {
+    return Math.min(10, Math.max(0,
+      Number(sessionStorage.getItem(chave)) || 0
+    ));
+  }
+
+  function actualizar() {
+    const total = obterContagem();
+    contador.textContent = total + ' / 10';
+    barra.style.width = (total * 10) + '%';
+
+    if (total >= 10) {
+      estado.textContent =
+        'Ciclo de 10 visitas concluído. Podes iniciar outro ciclo.';
+    } else {
+      estado.textContent =
+        'Faltam ' + (10 - total) + ' visitas para concluir o ciclo.';
+    }
+  }
+
+  botao.addEventListener('click', function () {
+    let total = obterContagem();
+
+    if (total >= 10) {
+      total = 0;
+      sessionStorage.setItem(chave, '0');
+    }
+
+    sessionStorage.setItem(pendente, '1');
+    window.location.href = '/anuncio.html';
+  });
+
+  function verificarRegresso() {
+    if (sessionStorage.getItem(pendente) === '1') {
+      sessionStorage.removeItem(pendente);
+
+      const total = Math.min(10, obterContagem() + 1);
+      sessionStorage.setItem(chave, String(total));
+    }
+
+    actualizar();
+  }
+
+  window.addEventListener('pageshow', verificarRegresso);
+  actualizar();
+})();
 </script>
 
 </body>
