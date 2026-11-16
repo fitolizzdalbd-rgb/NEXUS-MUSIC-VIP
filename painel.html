@@ -74,27 +74,6 @@ header {
   margin: 17px 0;
 }
 
-.progress-info {
-  display: flex;
-  justify-content: space-between;
-  font-size: 13px;
-  margin: 16px 0 10px;
-}
-
-.progress {
-  height: 10px;
-  background: #34343c;
-  border-radius: 20px;
-  overflow: hidden;
-}
-
-.bar {
-  width: 0%;
-  height: 100%;
-  background: #ed102d;
-  transition: width .3s;
-}
-
 .ad-button {
   display: block;
   width: 100%;
@@ -106,6 +85,11 @@ header {
   color: white;
   font-weight: bold;
   font-size: 15px;
+  cursor: pointer;
+}
+
+.ad-button:active {
+  transform: scale(.98);
 }
 
 .info {
@@ -132,74 +116,69 @@ footer {
 <body>
 <div class="container">
 
-<header>
-  <div class="logo">♫ NEXUS MUSIC</div>
-  <div class="status">● ONLINE</div>
-</header>
+  <header>
+    <div class="logo">♫ NEXUS MUSIC</div>
+    <div class="status">● ONLINE</div>
+  </header>
 
-<section class="card">
-  <p class="subtitle">BEM-VINDO AO TEU PAINEL VIP</p>
-  <h2>Minha conta</h2>
+  <section class="card">
+    <p class="subtitle">BEM-VINDO AO TEU PAINEL VIP</p>
+    <h2>Minha conta</h2>
 
-  <div class="divider"></div>
+    <div class="divider"></div>
 
-  <p class="subtitle">ID DO WHATSAPP</p>
-  <p class="user" id="userId">A carregar...</p>
+    <p class="subtitle">ID DO WHATSAPP</p>
+    <p class="user" id="userId">A carregar...</p>
 
-  <div class="divider"></div>
+    <div class="divider"></div>
 
-  <p class="subtitle">DIAS VIP DISPONÍVEIS</p>
-  <div class="days" id="days">-- dias</div>
+    <p class="subtitle">DIAS VIP DISPONÍVEIS</p>
+    <div class="days" id="days">-- dias</div>
 
-  <p class="subtitle" id="expiry">Validade: a consultar</p>
-</section>
+    <p class="subtitle" id="expiry">Validade: a consultar</p>
+  </section>
 
-<section class="card">
-  <h3>🎁 Ganhar dias VIP grátis</h3>
+  <section class="card">
+    <h3>🎁 Ganhar dias VIP grátis</h3>
 
-  <div class="progress-info">
-    <strong>Progresso dos anúncios</strong>
-    <strong id="count">0 / 10</strong>
-  </div>
+    <p class="info">
+      Visita a nossa página de publicidade.
+      Consulta as condições das ofertas disponíveis.
+    </p>
 
-  <div class="progress">
-    <div class="bar" id="bar"></div>
-  </div>
+    <button
+      class="ad-button"
+      id="adButton"
+      type="button">
+      ASSISTIR ANÚNCIO
+    </button>
+  </section>
 
-  <button class="ad-button" id="adButton" type="button">
-    ASSISTIR ANÚNCIO
-  </button>
-  <p class="info" id="adStatus" aria-live="polite">
-    Regressa ao painel para actualizar o contador.
-  </p>
+  <section class="card">
+    <h3>🎵 Serviços NEXUS</h3>
 
-  <p class="info">
-    Completa 10 anúncios válidos para receber
-    mais 1 dia VIP gratuito.
-  </p>
-</section>
+    <div class="divider"></div>
 
-<section class="card">
-  <h3>🎵 Serviços NEXUS</h3>
-  <div class="divider"></div>
-  <p>🎵 Música — <strong>.play</strong></p>
-  <br>
-  <p>🎬 Vídeos — <strong>.baixar</strong></p>
-  <p class="info">
-    O acesso aos serviços depende da validade
-    da tua conta VIP.
-  </p>
-</section>
+    <p>🎵 Música — <strong>.play</strong></p>
+    <br>
+    <p>🎬 Vídeos — <strong>.baixar</strong></p>
 
-<footer>
-  NEXUS MUSIC © 2026<br>
-  O TEU ACESSO, A TUA LIBERDADE.
-</footer>
+    <p class="info">
+      O acesso aos serviços depende da validade
+      da tua conta VIP.
+    </p>
+  </section>
+
+  <footer>
+    NEXUS MUSIC © 2026<br>
+    O TEU ACESSO, A TUA LIBERDADE.
+  </footer>
 
 </div>
 
 <script>
 const id = localStorage.getItem('nexus_user_id');
+
 const userElement = document.getElementById('userId');
 const daysElement = document.getElementById('days');
 const expiryElement = document.getElementById('expiry');
@@ -216,19 +195,23 @@ async function consultarVIP() {
   expiryElement.textContent = 'A verificar validade...';
 
   try {
-    const resposta = await fetch('/api/vip?id=' + encodeURIComponent(id), {
-      cache: 'no-store'
-    });
+    const resposta = await fetch(
+      '/api/vip?id=' + encodeURIComponent(id),
+      { cache: 'no-store' }
+    );
+
     const dados = await resposta.json();
 
     if (!resposta.ok || !dados.sucesso) {
       throw new Error(dados.erro || 'Erro na consulta.');
     }
 
-    daysElement.textContent = dados.dias + (dados.dias === 1 ? ' dia' : ' dias');
+    daysElement.textContent =
+      dados.dias + (dados.dias === 1 ? ' dia' : ' dias');
 
     if (dados.ativo && dados.expiraEm) {
       const data = new Date(dados.expiraEm);
+
       const formatada = new Intl.DateTimeFormat('pt-MZ', {
         dateStyle: 'long',
         timeStyle: 'short',
@@ -239,73 +222,18 @@ async function consultarVIP() {
     } else {
       expiryElement.textContent = 'VIP expirado ou inactivo.';
     }
+
   } catch (erro) {
     console.error('Erro ao consultar VIP:', erro);
     daysElement.textContent = '-- dias';
-    expiryElement.textContent = 'Não foi possível consultar. Tenta novamente.';
+    expiryElement.textContent =
+      'Não foi possível consultar. Tenta novamente.';
   }
 }
-</script>
 
-
-<script>
-(function () {
-  const botao = document.getElementById('adButton');
-  const contador = document.getElementById('count');
-  const barra = document.getElementById('bar');
-  const estado = document.getElementById('adStatus');
-
-  if (!botao || !contador || !barra || !estado) return;
-
-  const chave = 'nexus_anuncios_contador';
-  const pendente = 'nexus_anuncio_pendente';
-
-  function obterContagem() {
-    return Math.min(10, Math.max(0,
-      Number(sessionStorage.getItem(chave)) || 0
-    ));
-  }
-
-  function actualizar() {
-    const total = obterContagem();
-    contador.textContent = total + ' / 10';
-    barra.style.width = (total * 10) + '%';
-
-    if (total >= 10) {
-      estado.textContent =
-        'Ciclo de 10 visitas concluído. Podes iniciar outro ciclo.';
-    } else {
-      estado.textContent =
-        'Faltam ' + (10 - total) + ' visitas para concluir o ciclo.';
-    }
-  }
-
-  botao.addEventListener('click', function () {
-    let total = obterContagem();
-
-    if (total >= 10) {
-      total = 0;
-      sessionStorage.setItem(chave, '0');
-    }
-
-    sessionStorage.setItem(pendente, '1');
-    window.location.href = '/anuncio.html';
-  });
-
-  function verificarRegresso() {
-    if (sessionStorage.getItem(pendente) === '1') {
-      sessionStorage.removeItem(pendente);
-
-      const total = Math.min(10, obterContagem() + 1);
-      sessionStorage.setItem(chave, String(total));
-    }
-
-    actualizar();
-  }
-
-  window.addEventListener('pageshow', verificarRegresso);
-  actualizar();
-})();
+document.getElementById('adButton').addEventListener('click', function () {
+  window.location.href = '/anuncio.html';
+});
 </script>
 
 </body>
