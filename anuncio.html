@@ -1,60 +1,315 @@
+
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0b0b0f">
-<title>NEXUS MUSIC - Anúncios</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{
- background:#0b0b0f;color:white;
- font-family:Arial,sans-serif;
- min-height:100vh;padding:25px;
- display:flex;align-items:center;justify-content:center;
-}
-.container{width:100%;max-width:440px;text-align:center}
-.logo{color:#f0142f;font-size:28px;font-weight:bold;margin-bottom:35px}
-.card{
- background:#15151c;border:1px solid #292933;
- border-radius:18px;padding:28px 20px;
-}
-h1{font-size:25px;margin-bottom:15px}
-.red{color:#f0142f}
-p{color:#aaa;font-size:14px;line-height:1.7;margin:15px 0}
-.button{
- display:block;width:100%;padding:16px;
- background:#e50925;color:white;
- border:0;border-radius:10px;
- font-weight:bold;font-size:15px;
- text-decoration:none;margin-top:25px;
-}
-footer{color:#777;font-size:11px;margin-top:30px}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#090909">
+  <title>Publicidade - NEXUS MUSIC VIP</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #090909;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      padding: 16px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+    }
+
+    header {
+      text-align: center;
+      padding: 22px 10px;
+    }
+
+    header h1 {
+      color: #ff3030;
+      font-size: 27px;
+    }
+
+    header p {
+      color: #aaa;
+      margin-top: 8px;
+    }
+
+    .timer-box {
+      background: #171717;
+      border: 1px solid #333;
+      border-radius: 15px;
+      padding: 22px;
+      text-align: center;
+      margin: 15px 0 25px;
+    }
+
+    .timer-box h2 {
+      font-size: 14px;
+      color: #bbb;
+      margin-bottom: 10px;
+    }
+
+    #timer {
+      font-size: 48px;
+      font-weight: bold;
+      color: #20e878;
+    }
+
+    #status {
+      color: #aaa;
+      margin-top: 10px;
+      font-size: 13px;
+    }
+
+    .ads-title {
+      text-align: center;
+      margin: 25px 0 18px;
+      color: #ff4545;
+    }
+
+    .ad-unit {
+      background: #151515;
+      border: 1px solid #292929;
+      border-radius: 12px;
+      padding: 15px;
+      margin: 18px auto;
+      text-align: center;
+      overflow: auto;
+      min-height: 75px;
+    }
+
+    .ad-label {
+      color: #888;
+      font-size: 11px;
+      margin-bottom: 12px;
+    }
+
+    .finish-box {
+      display: none;
+      background: #151515;
+      border: 1px solid #20e878;
+      border-radius: 15px;
+      padding: 25px 15px;
+      text-align: center;
+      margin: 28px 0;
+    }
+
+    .finish-box h2 {
+      color: #20e878;
+      margin-bottom: 12px;
+    }
+
+    .finish-box p {
+      color: #bbb;
+      margin-bottom: 18px;
+    }
+
+    .back {
+      display: block;
+      text-align: center;
+      color: #aaa;
+      margin: 25px 0;
+      text-decoration: none;
+    }
+
+    footer {
+      color: #666;
+      text-align: center;
+      font-size: 12px;
+      padding: 20px 0;
+    }
+  </style>
 </head>
+
 <body>
-<div class="container">
- <div class="logo">♫ NEXUS MUSIC</div>
- <div class="card">
-  <h1>DESCUBRE O <span class="red">NEXUS VIP</span></h1>
-  <p>
-   Bem-vindo à página promocional do NEXUS MUSIC.
-   Descobre os nossos serviços de música, vídeos
-   e vantagens exclusivas.
-  </p>
-  <p><strong>O TEU ACESSO, A TUA LIBERDADE.</strong></p>
-  <p>Para regressar, utiliza a seta de voltar do teu navegador.</p>
- </div>
- <footer>NEXUS MUSIC © 2026
- <div style="margin-top:25px;min-height:100px;text-align:center;">
-   <p style="color:#aaa;font-size:13px;margin-bottom:15px;">
-     PUBLICIDADE
-   </p>
-   <script async="async" data-cfasync="false"
-   src="https://bauval.org/21/22fbee67b7db5c60edb54037fe2af0cb"></script>
-   <div id="container-22fbee67b7db5c60edb54037fe2af0cb"></div>
- </div>
- </footer>
-</div>
+  <main class="container">
+
+    <header>
+      <h1>PUBLICIDADE</h1>
+      <p>Espaço de anúncios do NEXUS MUSIC VIP</p>
+    </header>
+
+    <section class="timer-box">
+      <h2>TEMPO RESTANTE</h2>
+      <div id="timer">05:00</div>
+      <p id="status">Contagem regressiva em curso.</p>
+    </section>
+
+    <h2 class="ads-title">ANÚNCIOS</h2>
+
+    <!-- ANÚNCIO 1 -->
+    <div class="ad-unit">
+      <div class="ad-label">PUBLICIDADE</div>
+      <script data-cfasync="false"
+        src="https://bauval.org/14/82b799dd37d033c9f9590c4dd333e75e"></script>
+    </div>
+
+    <!-- ANÚNCIO 2 -->
+    <div class="ad-unit">
+      <div class="ad-label">PUBLICIDADE</div>
+      <script async="async" data-cfasync="false"
+        src="https://bauval.org/21/22fbee67b7db5c60edb54037fe2af0cb"></script>
+      <div id="container-22fbee67b7db5c60edb54037fe2af0cb"></div>
+    </div>
+
+    <!-- ANÚNCIO 3 -->
+    <div class="ad-unit">
+      <div class="ad-label">PUBLICIDADE</div>
+      <script>
+        atOptions = {
+          'key': 'cedb34f49cff801c7096fceb0448c68f',
+          'format': 'iframe',
+          'height': 300,
+          'width': 160,
+          'params': {}
+        };
+      </script>
+      <script src="https://bauval.org/22/cedb34f49cff801c7096fceb0448c68f"></script>
+    </div>
+
+    <!-- ANÚNCIO 4 -->
+    <div class="ad-unit">
+      <div class="ad-label">PUBLICIDADE</div>
+      <script>
+        atOptions = {
+          'key': 'ba694a936a85b9bde4a75382d149a247',
+          'format': 'iframe',
+          'height': 60,
+          'width': 468,
+          'params': {}
+        };
+      </script>
+      <script src="https://bauval.org/22/ba694a936a85b9bde4a75382d149a247"></script>
+    </div>
+
+    <!-- ANÚNCIO 5 -->
+    <div class="ad-unit">
+      <div class="ad-label">PUBLICIDADE</div>
+      <script>
+        atOptions = {
+          'key': 'd24451dc3c33808720e967eedaa94842',
+          'format': 'iframe',
+          'height': 250,
+          'width': 300,
+          'params': {}
+        };
+      </script>
+      <script src="https://bauval.org/22/d24451dc3c33808720e967eedaa94842"></script>
+    </div>
+
+    <!-- ANÚNCIO 6 -->
+    <div class="ad-unit">
+      <div class="ad-label">PUBLICIDADE</div>
+      <script>
+        atOptions = {
+          'key': 'da12e8c76e276a0049dd2b262f5916ae',
+          'format': 'iframe',
+          'height': 50,
+          'width': 320,
+          'params': {}
+        };
+      </script>
+      <script src="https://bauval.org/22/da12e8c76e276a0049dd2b262f5916ae"></script>
+    </div>
+
+    <!-- ANÚNCIO 7 -->
+    <div class="ad-unit">
+      <div class="ad-label">PUBLICIDADE</div>
+      <script>
+        atOptions = {
+          'key': '8b48f5cb3830c50398a59600179ff9b1',
+          'format': 'iframe',
+          'height': 90,
+          'width': 728,
+          'params': {}
+        };
+      </script>
+      <script src="https://bauval.org/22/8b48f5cb3830c50398a59600179ff9b1"></script>
+    </div>
+
+    <!-- ANÚNCIO 8 -->
+    <div class="ad-unit">
+      <div class="ad-label">PUBLICIDADE</div>
+      <script>
+        atOptions = {
+          'key': '12533d47fd8333dfa43cb1f40c63bd55',
+          'format': 'iframe',
+          'height': 600,
+          'width': 160,
+          'params': {}
+        };
+      </script>
+      <script src="https://bauval.org/22/12533d47fd8333dfa43cb1f40c63bd55"></script>
+    </div>
+
+    <section class="finish-box" id="finishBox">
+      <h2>CONTAGEM CONCLUÍDA!</h2>
+      <p>O período de permanência terminou.</p>
+      <p>A recompensa VIP será tratada pelo servidor quando a integração estiver configurada.</p>
+    </section>
+
+    <a class="back" href="/painel.html">
+      VOLTAR AO PAINEL VIP
+    </a>
+
+    <footer>
+      NEXUS MUSIC VIP
+    </footer>
+
+  </main>
+
+  <script>
+    (function () {
+      const timer = document.getElementById('timer');
+      const status = document.getElementById('status');
+      const finishBox = document.getElementById('finishBox');
+
+      const duration = 300;
+      const storageKey = 'nexus_ad_start';
+      let started = Number(sessionStorage.getItem(storageKey));
+
+      if (!started || !Number.isFinite(started)) {
+        started = Date.now();
+        sessionStorage.setItem(storageKey, String(started));
+      }
+
+      function updateTimer() {
+        const elapsed = Math.floor((Date.now() - started) / 1000);
+        const remaining = Math.max(0, duration - elapsed);
+
+        const minutes = Math.floor(remaining / 60);
+        const seconds = remaining % 60;
+
+        timer.textContent =
+          String(minutes).padStart(2, '0') + ':' +
+          String(seconds).padStart(2, '0');
+
+        if (remaining === 0) {
+          status.textContent = 'Contagem concluída!';
+          finishBox.style.display = 'block';
+          return;
+        }
+
+        status.textContent = 'Contagem regressiva em curso.';
+      }
+
+      updateTimer();
+      const interval = setInterval(() => {
+        updateTimer();
+
+        if (Date.now() - started >= duration * 1000) {
+          clearInterval(interval);
+        }
+      }, 1000);
+    })();
+  </script>
+
 </body>
 </html>
