@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#090909">
-  <title>Publicidade - NEXUS MUSIC VIP</title>
+  <title>Anúncios - NEXUS MUSIC VIP</title>
 
   <style>
     * {
@@ -18,71 +18,74 @@
       background: #090909;
       color: #fff;
       font-family: Arial, sans-serif;
-      padding: 16px;
+      padding: 15px;
     }
 
     .container {
+      width: 100%;
       max-width: 900px;
       margin: auto;
     }
 
     header {
       text-align: center;
-      padding: 22px 10px;
+      padding: 22px 5px;
     }
 
     header h1 {
-      color: #ff3030;
+      color: #ff263f;
       font-size: 27px;
     }
 
     header p {
       color: #aaa;
-      margin-top: 8px;
+      margin-top: 9px;
     }
 
     .timer-box {
       background: #171717;
-      border: 1px solid #333;
-      border-radius: 15px;
-      padding: 22px;
+      border: 1px solid #303030;
+      border-radius: 16px;
+      padding: 24px 12px;
       text-align: center;
       margin: 15px 0 25px;
     }
 
     .timer-box h2 {
-      font-size: 14px;
       color: #bbb;
+      font-size: 14px;
       margin-bottom: 10px;
     }
 
     #timer {
-      font-size: 48px;
-      font-weight: bold;
       color: #20e878;
+      font-size: 52px;
+      font-weight: bold;
+      font-variant-numeric: tabular-nums;
     }
 
     #status {
       color: #aaa;
-      margin-top: 10px;
       font-size: 13px;
+      margin-top: 10px;
     }
 
     .ads-title {
       text-align: center;
+      color: #ff394c;
       margin: 25px 0 18px;
-      color: #ff4545;
     }
 
     .ad-unit {
       background: #151515;
       border: 1px solid #292929;
-      border-radius: 12px;
-      padding: 15px;
+      border-radius: 13px;
+      padding: 14px;
       margin: 18px auto;
+      min-height: 80px;
       text-align: center;
-      overflow: auto;
-      min-height: 75px;
+      overflow-x: auto;
+      overflow-y: hidden;
     }
 
     .ad-label {
@@ -91,14 +94,21 @@
       margin-bottom: 12px;
     }
 
+    .ad-content {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-width: 0;
+    }
+
     .finish-box {
       display: none;
       background: #151515;
       border: 1px solid #20e878;
       border-radius: 15px;
-      padding: 25px 15px;
+      padding: 24px 15px;
+      margin: 25px 0;
       text-align: center;
-      margin: 28px 0;
     }
 
     .finish-box h2 {
@@ -108,15 +118,16 @@
 
     .finish-box p {
       color: #bbb;
-      margin-bottom: 18px;
+      line-height: 1.5;
     }
 
     .back {
       display: block;
       text-align: center;
       color: #aaa;
-      margin: 25px 0;
       text-decoration: none;
+      margin: 25px 0;
+      padding: 12px;
     }
 
     footer {
@@ -139,7 +150,7 @@
     <section class="timer-box">
       <h2>TEMPO RESTANTE</h2>
       <div id="timer">05:00</div>
-      <p id="status">Contagem regressiva em curso.</p>
+      <p id="status">A contagem começa nesta página.</p>
     </section>
 
     <h2 class="ads-title">ANÚNCIOS</h2>
@@ -147,121 +158,134 @@
     <!-- ANÚNCIO 1 -->
     <div class="ad-unit">
       <div class="ad-label">PUBLICIDADE</div>
-      <script data-cfasync="false"
-        src="https://bauval.org/14/82b799dd37d033c9f9590c4dd333e75e"></script>
+      <div class="ad-content">
+        <script data-cfasync="false"
+          src="https://bauval.org/14/82b799dd37d033c9f9590c4dd333e75e"></script>
+      </div>
     </div>
 
     <!-- ANÚNCIO 2 -->
     <div class="ad-unit">
       <div class="ad-label">PUBLICIDADE</div>
-      <script async="async" data-cfasync="false"
-        src="https://bauval.org/21/22fbee67b7db5c60edb54037fe2af0cb"></script>
-      <div id="container-22fbee67b7db5c60edb54037fe2af0cb"></div>
+      <div class="ad-content">
+        <script async="async" data-cfasync="false"
+          src="https://bauval.org/21/22fbee67b7db5c60edb54037fe2af0cb"></script>
+        <div id="container-22fbee67b7db5c60edb54037fe2af0cb"></div>
+      </div>
     </div>
 
     <!-- ANÚNCIO 3 -->
     <div class="ad-unit">
       <div class="ad-label">PUBLICIDADE</div>
-      <script>
-        atOptions = {
-          'key': 'cedb34f49cff801c7096fceb0448c68f',
-          'format': 'iframe',
-          'height': 300,
-          'width': 160,
-          'params': {}
-        };
-      </script>
-      <script src="https://bauval.org/22/cedb34f49cff801c7096fceb0448c68f"></script>
+      <div class="ad-content">
+        <script>
+          atOptions = {
+            'key': 'cedb34f49cff801c7096fceb0448c68f',
+            'format': 'iframe',
+            'height': 300,
+            'width': 160,
+            'params': {}
+          };
+        </script>
+        <script src="https://bauval.org/22/cedb34f49cff801c7096fceb0448c68f"></script>
+      </div>
     </div>
 
     <!-- ANÚNCIO 4 -->
     <div class="ad-unit">
       <div class="ad-label">PUBLICIDADE</div>
-      <script>
-        atOptions = {
-          'key': 'ba694a936a85b9bde4a75382d149a247',
-          'format': 'iframe',
-          'height': 60,
-          'width': 468,
-          'params': {}
-        };
-      </script>
-      <script src="https://bauval.org/22/ba694a936a85b9bde4a75382d149a247"></script>
+      <div class="ad-content">
+        <script>
+          atOptions = {
+            'key': 'ba694a936a85b9bde4a75382d149a247',
+            'format': 'iframe',
+            'height': 60,
+            'width': 468,
+            'params': {}
+          };
+        </script>
+        <script src="https://bauval.org/22/ba694a936a85b9bde4a75382d149a247"></script>
+      </div>
     </div>
 
     <!-- ANÚNCIO 5 -->
     <div class="ad-unit">
       <div class="ad-label">PUBLICIDADE</div>
-      <script>
-        atOptions = {
-          'key': 'd24451dc3c33808720e967eedaa94842',
-          'format': 'iframe',
-          'height': 250,
-          'width': 300,
-          'params': {}
-        };
-      </script>
-      <script src="https://bauval.org/22/d24451dc3c33808720e967eedaa94842"></script>
+      <div class="ad-content">
+        <script>
+          atOptions = {
+            'key': 'd24451dc3c33808720e967eedaa94842',
+            'format': 'iframe',
+            'height': 250,
+            'width': 300,
+            'params': {}
+          };
+        </script>
+        <script src="https://bauval.org/22/d24451dc3c33808720e967eedaa94842"></script>
+      </div>
     </div>
 
     <!-- ANÚNCIO 6 -->
     <div class="ad-unit">
       <div class="ad-label">PUBLICIDADE</div>
-      <script>
-        atOptions = {
-          'key': 'da12e8c76e276a0049dd2b262f5916ae',
-          'format': 'iframe',
-          'height': 50,
-          'width': 320,
-          'params': {}
-        };
-      </script>
-      <script src="https://bauval.org/22/da12e8c76e276a0049dd2b262f5916ae"></script>
+      <div class="ad-content">
+        <script>
+          atOptions = {
+            'key': 'da12e8c76e276a0049dd2b262f5916ae',
+            'format': 'iframe',
+            'height': 50,
+            'width': 320,
+            'params': {}
+          };
+        </script>
+        <script src="https://bauval.org/22/da12e8c76e276a0049dd2b262f5916ae"></script>
+      </div>
     </div>
 
     <!-- ANÚNCIO 7 -->
     <div class="ad-unit">
       <div class="ad-label">PUBLICIDADE</div>
-      <script>
-        atOptions = {
-          'key': '8b48f5cb3830c50398a59600179ff9b1',
-          'format': 'iframe',
-          'height': 90,
-          'width': 728,
-          'params': {}
-        };
-      </script>
-      <script src="https://bauval.org/22/8b48f5cb3830c50398a59600179ff9b1"></script>
+      <div class="ad-content">
+        <script>
+          atOptions = {
+            'key': '8b48f5cb3830c50398a59600179ff9b1',
+            'format': 'iframe',
+            'height': 90,
+            'width': 728,
+            'params': {}
+          };
+        </script>
+        <script src="https://bauval.org/22/8b48f5cb3830c50398a59600179ff9b1"></script>
+      </div>
     </div>
 
     <!-- ANÚNCIO 8 -->
     <div class="ad-unit">
       <div class="ad-label">PUBLICIDADE</div>
-      <script>
-        atOptions = {
-          'key': '12533d47fd8333dfa43cb1f40c63bd55',
-          'format': 'iframe',
-          'height': 600,
-          'width': 160,
-          'params': {}
-        };
-      </script>
-      <script src="https://bauval.org/22/12533d47fd8333dfa43cb1f40c63bd55"></script>
+      <div class="ad-content">
+        <script>
+          atOptions = {
+            'key': '12533d47fd8333dfa43cb1f40c63bd55',
+            'format': 'iframe',
+            'height': 600,
+            'width': 160,
+            'params': {}
+          };
+        </script>
+        <script src="https://bauval.org/22/12533d47fd8333dfa43cb1f40c63bd55"></script>
+      </div>
     </div>
 
     <section class="finish-box" id="finishBox">
       <h2>CONTAGEM CONCLUÍDA!</h2>
-      <p>O período de permanência terminou.</p>
-      <p>A recompensa VIP será tratada pelo servidor quando a integração estiver configurada.</p>
+      <p>O período de cinco minutos terminou.</p>
     </section>
 
     <a class="back" href="/painel.html">
       VOLTAR AO PAINEL VIP
     </a>
 
-    <footer>
-      NEXUS MUSIC VIP
-    </footer>
+    <footer>NEXUS MUSIC VIP</footer>
 
   </main>
 
@@ -271,43 +295,95 @@
       const status = document.getElementById('status');
       const finishBox = document.getElementById('finishBox');
 
-      const duration = 300;
-      const storageKey = 'nexus_ad_start';
-      let started = Number(sessionStorage.getItem(storageKey));
+      const KEY = 'nexus_ad_remaining_seconds';
+      const DURATION = 300;
 
-      if (!started || !Number.isFinite(started)) {
-        started = Date.now();
-        sessionStorage.setItem(storageKey, String(started));
+      let remaining = sessionStorage.getItem(KEY) === null
+        ? DURATION
+        : Math.max(0, Number(sessionStorage.getItem(KEY)));
+
+      let lastTime = Date.now();
+      let interval = null;
+
+      function formatTime(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+
+        return String(minutes).padStart(2, '0') + ':' +
+               String(secs).padStart(2, '0');
       }
 
-      function updateTimer() {
-        const elapsed = Math.floor((Date.now() - started) / 1000);
-        const remaining = Math.max(0, duration - elapsed);
+      function saveTime() {
+        sessionStorage.setItem(KEY, String(remaining));
+      }
 
-        const minutes = Math.floor(remaining / 60);
-        const seconds = remaining % 60;
+      function render() {
+        timer.textContent = formatTime(remaining);
 
-        timer.textContent =
-          String(minutes).padStart(2, '0') + ':' +
-          String(seconds).padStart(2, '0');
-
-        if (remaining === 0) {
+        if (remaining <= 0) {
+          remaining = 0;
+          timer.textContent = '00:00';
           status.textContent = 'Contagem concluída!';
           finishBox.style.display = 'block';
+          saveTime();
+        }
+      }
+
+      function pauseTimer() {
+        if (interval !== null) {
+          clearInterval(interval);
+          interval = null;
+        }
+
+        saveTime();
+        status.textContent = remaining > 0
+          ? 'Contagem suspensa. Volta para continuar.'
+          : 'Contagem concluída!';
+      }
+
+      function startTimer() {
+        if (document.hidden || remaining <= 0 || interval !== null) {
           return;
         }
 
+        lastTime = Date.now();
         status.textContent = 'Contagem regressiva em curso.';
+
+        interval = setInterval(function () {
+          const now = Date.now();
+          const elapsed = Math.floor((now - lastTime) / 1000);
+
+          if (elapsed < 1) return;
+
+          lastTime += elapsed * 1000;
+          remaining = Math.max(0, remaining - elapsed);
+
+          saveTime();
+          render();
+
+          if (remaining <= 0) {
+            pauseTimer();
+          }
+        }, 250);
       }
 
-      updateTimer();
-      const interval = setInterval(() => {
-        updateTimer();
-
-        if (Date.now() - started >= duration * 1000) {
-          clearInterval(interval);
+      document.addEventListener('visibilitychange', function () {
+        if (document.hidden) {
+          pauseTimer();
+        } else {
+          startTimer();
         }
-      }, 1000);
+      });
+
+      window.addEventListener('pagehide', pauseTimer);
+
+      window.addEventListener('pageshow', function () {
+        render();
+        startTimer();
+      });
+
+      render();
+      startTimer();
     })();
   </script>
 
