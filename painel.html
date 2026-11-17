@@ -74,6 +74,26 @@ header {
   margin: 17px 0;
 }
 
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin: 16px 0 10px;
+}
+
+.progress {
+  height: 10px;
+  background: #34343c;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.bar {
+  width: 100%;
+  height: 100%;
+  background: #ed102d;
+}
+
 .ad-button {
   display: block;
   width: 100%;
@@ -88,9 +108,8 @@ header {
   cursor: pointer;
 }
 
-.ad-button:disabled {
-  opacity: .6;
-  cursor: not-allowed;
+.ad-button:active {
+  opacity: .8;
 }
 
 .info {
@@ -107,19 +126,14 @@ header {
 
 .notice {
   display: none;
-  background: #10291c;
-  border: 1px solid #20e878;
-  color: #20e878;
+  background: #123b2b;
+  border: 1px solid #31d68b;
+  color: #65f0ac;
   border-radius: 12px;
   padding: 15px;
   margin-bottom: 18px;
-  font-size: 14px;
-  line-height: 1.5;
-  text-align: center;
-}
-
-.error {
-  color: #ff6878;
+  font-size: 13px;
+  line-height: 1.6;
 }
 
 footer {
@@ -139,10 +153,9 @@ footer {
   <div class="status">● ONLINE</div>
 </header>
 
-<div class="notice" id="rewardNotice" role="status">
-  🎉 PARABÉNS! Recebeste mais 1 dia VIP!
-  <br>
-  A validade da tua conta foi actualizada.
+<div class="notice" id="rewardNotice" aria-live="polite">
+  🎉 Parabéns! Recebeste mais 1 dia VIP.
+  A validade da tua conta foi actualizada com sucesso.
 </div>
 
 <section class="card">
@@ -165,20 +178,27 @@ footer {
 <section class="card">
   <h3>🎁 Ganhar dias VIP grátis</h3>
 
-  <div class="divider"></div>
+  <div class="progress-info">
+    <strong>Duração do ciclo</strong>
+    <strong>05:00</strong>
+  </div>
 
-  <p class="info">
-    Podes ganhar mais 1 dia VIP através do sistema
-    de recompensa NEXUS MUSIC.
-  </p>
+  <div class="progress">
+    <div class="bar" id="bar"></div>
+  </div>
 
   <button class="ad-button" id="adButton" type="button">
     ASSISTIR ANÚNCIOS
   </button>
 
   <p class="info" id="adStatus" aria-live="polite">
-    Completa o ciclo de 5 minutos para solicitar
-    mais 1 dia VIP.
+    Assiste aos anúncios durante 5 minutos.
+    Quando terminares, poderás solicitar 1 dia VIP gratuito.
+  </p>
+
+  <p class="info">
+    Cada ciclo concluído permite solicitar mais 1 dia VIP.
+    A recompensa será adicionada à validade da tua conta.
   </p>
 </section>
 
@@ -205,106 +225,97 @@ footer {
 </div>
 
 <script>
-(function () {
-  const API_BASE =
-    'https://frankfurt-reveals-dosage-gui.trycloudflare.com';
+const API_BASE =
+  'https://gabriel-dicke-person-bond.trycloudflare.com';
 
-  const id = localStorage.getItem('nexus_user_id');
+const id = localStorage.getItem('nexus_user_id');
 
-  const userElement = document.getElementById('userId');
-  const daysElement = document.getElementById('days');
-  const expiryElement = document.getElementById('expiry');
-  const adButton = document.getElementById('adButton');
-  const adStatus = document.getElementById('adStatus');
-  const rewardNotice = document.getElementById('rewardNotice');
+const userElement = document.getElementById('userId');
+const daysElement = document.getElementById('days');
+const expiryElement = document.getElementById('expiry');
+const rewardNotice = document.getElementById('rewardNotice');
 
-  if (!id || !/^[0-9]{6,20}$/.test(id)) {
-    window.location.href = '/';
-    return;
-  }
-
+if (!id || !/^[0-9]{6,20}$/.test(id)) {
+  window.location.href = '/';
+} else {
   userElement.textContent = id;
 
-  // CONSULTAR A VALIDADE VIP
-  async function consultarVIP() {
-    daysElement.textContent = 'A consultar...';
-    expiryElement.textContent = 'A verificar validade...';
-
-    try {
-      const resposta = await fetch(
-        API_BASE + '/api/vip?id=' + encodeURIComponent(id),
-        { cache: 'no-store' }
-      );
-
-      const dados = await resposta.json();
-
-      if (!resposta.ok || !dados.sucesso) {
-        throw new Error(dados.erro || 'Erro na consulta.');
-      }
-
-      daysElement.textContent =
-        dados.dias + (dados.dias === 1 ? ' dia' : ' dias');
-
-      if (dados.ativo && dados.expiraEm) {
-        const data = new Date(dados.expiraEm);
-
-        const formatada = new Intl.DateTimeFormat('pt-MZ', {
-          dateStyle: 'long',
-          timeStyle: 'short',
-          timeZone: 'Africa/Maputo'
-        }).format(data);
-
-        expiryElement.textContent =
-          'Validade até: ' + formatada;
-
-      } else {
-        expiryElement.textContent =
-          'VIP expirado ou inactivo.';
-      }
-
-    } catch (erro) {
-      console.error('Erro ao consultar VIP:', erro);
-
-      daysElement.textContent = '-- dias';
-      expiryElement.textContent =
-        'Não foi possível consultar. Tenta novamente.';
-    }
+  if (localStorage.getItem('nexus_vip_reward_notice') === '1') {
+    rewardNotice.style.display = 'block';
+    localStorage.removeItem('nexus_vip_reward_notice');
   }
 
-  // NOTIFICAÇÃO DE RECOMPENSA
-  function verificarRecompensa() {
-    const recebeu = localStorage.getItem(
-      'nexus_vip_reward_notice'
+  consultarVIP();
+}
+
+async function consultarVIP() {
+  daysElement.textContent = 'A consultar...';
+  expiryElement.textContent = 'A verificar validade...';
+
+  try {
+    const resposta = await fetch(
+      API_BASE + '/api/vip?id=' + encodeURIComponent(id),
+      {
+        method: 'GET',
+        cache: 'no-store'
+      }
     );
 
-    if (recebeu === '1') {
-      rewardNotice.style.display = 'block';
+    const dados = await resposta.json();
 
-      localStorage.removeItem('nexus_vip_reward_notice');
-
-      consultarVIP();
+    if (!resposta.ok || !dados.sucesso) {
+      throw new Error(dados.erro || 'Erro na consulta.');
     }
+
+    const dias = Number(dados.dias) || 0;
+
+    daysElement.textContent =
+      dias + (dias === 1 ? ' dia' : ' dias');
+
+    if (dados.ativo && dados.expiraEm) {
+      const data = new Date(dados.expiraEm);
+
+      const formatada = new Intl.DateTimeFormat('pt-MZ', {
+        dateStyle: 'long',
+        timeStyle: 'short',
+        timeZone: 'Africa/Maputo'
+      }).format(data);
+
+      expiryElement.textContent =
+        'Validade até: ' + formatada;
+
+    } else {
+      expiryElement.textContent =
+        'VIP expirado ou inactivo.';
+    }
+
+  } catch (erro) {
+    console.error('Erro ao consultar VIP:', erro);
+
+    daysElement.textContent = '-- dias';
+    expiryElement.textContent =
+      'Não foi possível consultar. Tenta novamente.';
   }
+}
 
-  // ABRIR A PÁGINA DE ANÚNCIOS
-  adButton.addEventListener('click', function () {
-    window.location.href = '/anuncio.html';
-  });
+// Abrir a página dos anúncios
+const adButton = document.getElementById('adButton');
 
-  // INICIAR PAINEL
-  verificarRecompensa();
-  consultarVIP();
+adButton.addEventListener('click', function () {
+  window.location.href = '/anuncio.html';
+});
 
-  // ACTUALIZAR VALIDADE PERIODICAMENTE
-  setInterval(consultarVIP, 60000);
-
-  // VERIFICAR NOTIFICAÇÃO AO REGRESSAR
-  window.addEventListener('pageshow', function () {
-    verificarRecompensa();
+// Actualizar a conta automaticamente
+setInterval(function () {
+  if (id && /^[0-9]{6,20}$/.test(id)) {
     consultarVIP();
-  });
+  }
+}, 60000);
 
-})();
+// Actualizar quando o utilizador regressar ao painel
+window.addEventListener('pageshow', consultarVIP);
+
+window.addEventListener('focus', consultarVIP);
 </script>
 
 </body>
