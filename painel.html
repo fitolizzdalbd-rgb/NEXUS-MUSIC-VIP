@@ -226,7 +226,7 @@ footer {
 
 <script>
 const API_BASE =
-  'https://gabriel-dicke-person-bond.trycloudflare.com';
+  'https://originally-perform-sustained-biggest.trycloudflare.com';
 
 const id = localStorage.getItem('nexus_user_id');
 
@@ -234,6 +234,7 @@ const userElement = document.getElementById('userId');
 const daysElement = document.getElementById('days');
 const expiryElement = document.getElementById('expiry');
 const rewardNotice = document.getElementById('rewardNotice');
+const adButton = document.getElementById('adButton');
 
 if (!id || !/^[0-9]{6,20}$/.test(id)) {
   window.location.href = '/';
@@ -257,17 +258,29 @@ async function consultarVIP() {
       API_BASE + '/api/vip?id=' + encodeURIComponent(id),
       {
         method: 'GET',
-        cache: 'no-store'
+        cache: 'no-store',
+        headers: {
+          'Accept': 'application/json',
+          'cf-skip-browser-warning': 'true'
+        }
       }
     );
 
-    const dados = await resposta.json();
-
-    if (!resposta.ok || !dados.sucesso) {
-      throw new Error(dados.erro || 'Erro na consulta.');
+    if (!resposta.ok) {
+      throw new Error('Servidor respondeu: HTTP ' + resposta.status);
     }
 
-    const dias = Number(dados.dias) || 0;
+    const dados = await resposta.json();
+
+    if (!dados.sucesso) {
+      throw new Error(dados.erro || 'Erro na consulta VIP.');
+    }
+
+    const dias = Number(dados.dias);
+
+    if (!Number.isFinite(dias)) {
+      throw new Error('O servidor devolveu um número de dias inválido.');
+    }
 
     daysElement.textContent =
       dias + (dias === 1 ? ' dia' : ' dias');
@@ -281,12 +294,9 @@ async function consultarVIP() {
         timeZone: 'Africa/Maputo'
       }).format(data);
 
-      expiryElement.textContent =
-        'Validade até: ' + formatada;
-
+      expiryElement.textContent = 'Validade até: ' + formatada;
     } else {
-      expiryElement.textContent =
-        'VIP expirado ou inactivo.';
+      expiryElement.textContent = 'VIP expirado ou inactivo.';
     }
 
   } catch (erro) {
@@ -294,27 +304,21 @@ async function consultarVIP() {
 
     daysElement.textContent = '-- dias';
     expiryElement.textContent =
-      'Não foi possível consultar. Tenta novamente.';
+      'Erro: ' + (erro.message || 'Falha desconhecida');
   }
 }
-
-// Abrir a página dos anúncios
-const adButton = document.getElementById('adButton');
 
 adButton.addEventListener('click', function () {
   window.location.href = '/anuncio.html';
 });
 
-// Actualizar a conta automaticamente
 setInterval(function () {
   if (id && /^[0-9]{6,20}$/.test(id)) {
     consultarVIP();
   }
 }, 60000);
 
-// Actualizar quando o utilizador regressar ao painel
 window.addEventListener('pageshow', consultarVIP);
-
 window.addEventListener('focus', consultarVIP);
 </script>
 
