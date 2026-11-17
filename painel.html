@@ -88,8 +88,9 @@ header {
   cursor: pointer;
 }
 
-.ad-button:active {
-  transform: scale(.98);
+.ad-button:disabled {
+  opacity: .6;
+  cursor: not-allowed;
 }
 
 .info {
@@ -104,6 +105,23 @@ header {
   overflow-wrap: anywhere;
 }
 
+.notice {
+  display: none;
+  background: #10291c;
+  border: 1px solid #20e878;
+  color: #20e878;
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 18px;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.error {
+  color: #ff6878;
+}
+
 footer {
   text-align: center;
   color: #777782;
@@ -116,124 +134,177 @@ footer {
 <body>
 <div class="container">
 
-  <header>
-    <div class="logo">♫ NEXUS MUSIC</div>
-    <div class="status">● ONLINE</div>
-  </header>
+<header>
+  <div class="logo">♫ NEXUS MUSIC</div>
+  <div class="status">● ONLINE</div>
+</header>
 
-  <section class="card">
-    <p class="subtitle">BEM-VINDO AO TEU PAINEL VIP</p>
-    <h2>Minha conta</h2>
+<div class="notice" id="rewardNotice" role="status">
+  🎉 PARABÉNS! Recebeste mais 1 dia VIP!
+  <br>
+  A validade da tua conta foi actualizada.
+</div>
 
-    <div class="divider"></div>
+<section class="card">
+  <p class="subtitle">BEM-VINDO AO TEU PAINEL VIP</p>
+  <h2>Minha conta</h2>
 
-    <p class="subtitle">ID DO WHATSAPP</p>
-    <p class="user" id="userId">A carregar...</p>
+  <div class="divider"></div>
 
-    <div class="divider"></div>
+  <p class="subtitle">ID DO WHATSAPP</p>
+  <p class="user" id="userId">A carregar...</p>
 
-    <p class="subtitle">DIAS VIP DISPONÍVEIS</p>
-    <div class="days" id="days">-- dias</div>
+  <div class="divider"></div>
 
-    <p class="subtitle" id="expiry">Validade: a consultar</p>
-  </section>
+  <p class="subtitle">DIAS VIP DISPONÍVEIS</p>
+  <div class="days" id="days">-- dias</div>
 
-  <section class="card">
-    <h3>🎁 Ganhar dias VIP grátis</h3>
+  <p class="subtitle" id="expiry">Validade: a consultar</p>
+</section>
 
-    <p class="info">
-      Visita a nossa página de publicidade.
-      Consulta as condições das ofertas disponíveis.
-    </p>
+<section class="card">
+  <h3>🎁 Ganhar dias VIP grátis</h3>
 
-    <button
-      class="ad-button"
-      id="adButton"
-      type="button">
-      ASSISTIR ANÚNCIO
-    </button>
-  </section>
+  <div class="divider"></div>
 
-  <section class="card">
-    <h3>🎵 Serviços NEXUS</h3>
+  <p class="info">
+    Podes ganhar mais 1 dia VIP através do sistema
+    de recompensa NEXUS MUSIC.
+  </p>
 
-    <div class="divider"></div>
+  <button class="ad-button" id="adButton" type="button">
+    ASSISTIR ANÚNCIOS
+  </button>
 
-    <p>🎵 Música — <strong>.play</strong></p>
-    <br>
-    <p>🎬 Vídeos — <strong>.baixar</strong></p>
+  <p class="info" id="adStatus" aria-live="polite">
+    Completa o ciclo de 5 minutos para solicitar
+    mais 1 dia VIP.
+  </p>
+</section>
 
-    <p class="info">
-      O acesso aos serviços depende da validade
-      da tua conta VIP.
-    </p>
-  </section>
+<section class="card">
+  <h3>🎵 Serviços NEXUS</h3>
 
-  <footer>
-    NEXUS MUSIC © 2026<br>
-    O TEU ACESSO, A TUA LIBERDADE.
-  </footer>
+  <div class="divider"></div>
+
+  <p>🎵 Música — <strong>.play</strong></p>
+  <br>
+  <p>🎬 Vídeos — <strong>.baixar</strong></p>
+
+  <p class="info">
+    O acesso aos serviços depende da validade
+    da tua conta VIP.
+  </p>
+</section>
+
+<footer>
+  NEXUS MUSIC © 2026<br>
+  O TEU ACESSO, A TUA LIBERDADE.
+</footer>
 
 </div>
 
 <script>
-const id = localStorage.getItem('nexus_user_id');
+(function () {
+  const API_BASE =
+    'https://frankfurt-reveals-dosage-gui.trycloudflare.com';
 
-const userElement = document.getElementById('userId');
-const daysElement = document.getElementById('days');
-const expiryElement = document.getElementById('expiry');
+  const id = localStorage.getItem('nexus_user_id');
 
-if (!id || !/^[0-9]+$/.test(id)) {
-  window.location.href = '/';
-} else {
+  const userElement = document.getElementById('userId');
+  const daysElement = document.getElementById('days');
+  const expiryElement = document.getElementById('expiry');
+  const adButton = document.getElementById('adButton');
+  const adStatus = document.getElementById('adStatus');
+  const rewardNotice = document.getElementById('rewardNotice');
+
+  if (!id || !/^[0-9]{6,20}$/.test(id)) {
+    window.location.href = '/';
+    return;
+  }
+
   userElement.textContent = id;
-  consultarVIP();
-}
 
-async function consultarVIP() {
-  daysElement.textContent = 'A consultar...';
-  expiryElement.textContent = 'A verificar validade...';
+  // CONSULTAR A VALIDADE VIP
+  async function consultarVIP() {
+    daysElement.textContent = 'A consultar...';
+    expiryElement.textContent = 'A verificar validade...';
 
-  try {
-    const resposta = await fetch(
-      '/api/vip?id=' + encodeURIComponent(id),
-      { cache: 'no-store' }
+    try {
+      const resposta = await fetch(
+        API_BASE + '/api/vip?id=' + encodeURIComponent(id),
+        { cache: 'no-store' }
+      );
+
+      const dados = await resposta.json();
+
+      if (!resposta.ok || !dados.sucesso) {
+        throw new Error(dados.erro || 'Erro na consulta.');
+      }
+
+      daysElement.textContent =
+        dados.dias + (dados.dias === 1 ? ' dia' : ' dias');
+
+      if (dados.ativo && dados.expiraEm) {
+        const data = new Date(dados.expiraEm);
+
+        const formatada = new Intl.DateTimeFormat('pt-MZ', {
+          dateStyle: 'long',
+          timeStyle: 'short',
+          timeZone: 'Africa/Maputo'
+        }).format(data);
+
+        expiryElement.textContent =
+          'Validade até: ' + formatada;
+
+      } else {
+        expiryElement.textContent =
+          'VIP expirado ou inactivo.';
+      }
+
+    } catch (erro) {
+      console.error('Erro ao consultar VIP:', erro);
+
+      daysElement.textContent = '-- dias';
+      expiryElement.textContent =
+        'Não foi possível consultar. Tenta novamente.';
+    }
+  }
+
+  // NOTIFICAÇÃO DE RECOMPENSA
+  function verificarRecompensa() {
+    const recebeu = localStorage.getItem(
+      'nexus_vip_reward_notice'
     );
 
-    const dados = await resposta.json();
+    if (recebeu === '1') {
+      rewardNotice.style.display = 'block';
 
-    if (!resposta.ok || !dados.sucesso) {
-      throw new Error(dados.erro || 'Erro na consulta.');
+      localStorage.removeItem('nexus_vip_reward_notice');
+
+      consultarVIP();
     }
-
-    daysElement.textContent =
-      dados.dias + (dados.dias === 1 ? ' dia' : ' dias');
-
-    if (dados.ativo && dados.expiraEm) {
-      const data = new Date(dados.expiraEm);
-
-      const formatada = new Intl.DateTimeFormat('pt-MZ', {
-        dateStyle: 'long',
-        timeStyle: 'short',
-        timeZone: 'Africa/Maputo'
-      }).format(data);
-
-      expiryElement.textContent = 'Validade até: ' + formatada;
-    } else {
-      expiryElement.textContent = 'VIP expirado ou inactivo.';
-    }
-
-  } catch (erro) {
-    console.error('Erro ao consultar VIP:', erro);
-    daysElement.textContent = '-- dias';
-    expiryElement.textContent =
-      'Não foi possível consultar. Tenta novamente.';
   }
-}
 
-document.getElementById('adButton').addEventListener('click', function () {
-  window.location.href = '/anuncio.html';
-});
+  // ABRIR A PÁGINA DE ANÚNCIOS
+  adButton.addEventListener('click', function () {
+    window.location.href = '/anuncio.html';
+  });
+
+  // INICIAR PAINEL
+  verificarRecompensa();
+  consultarVIP();
+
+  // ACTUALIZAR VALIDADE PERIODICAMENTE
+  setInterval(consultarVIP, 60000);
+
+  // VERIFICAR NOTIFICAÇÃO AO REGRESSAR
+  window.addEventListener('pageshow', function () {
+    verificarRecompensa();
+    consultarVIP();
+  });
+
+})();
 </script>
 
 </body>
