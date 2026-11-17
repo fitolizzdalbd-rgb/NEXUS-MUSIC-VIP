@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -33,7 +34,6 @@ footer{color:#666;text-align:center;font-size:12px;padding:20px 0}
 </head>
 <body>
 <main class="container">
-
 <header>
 <h1>PUBLICIDADE</h1>
 <p>Espaço de anúncios do NEXUS MUSIC VIP</p>
@@ -68,15 +68,7 @@ footer{color:#666;text-align:center;font-size:12px;padding:20px 0}
 <div class="ad-unit">
 <div class="ad-label">PUBLICIDADE</div>
 <div class="ad-content">
-<script>
-atOptions={
-'key':'cedb34f49cff801c7096fceb0448c68f',
-'format':'iframe',
-'height':300,
-'width':160,
-'params':{}
-};
-</script>
+<script>atOptions={'key':'cedb34f49cff801c7096fceb0448c68f','format':'iframe','height':300,'width':160,'params':{}};</script>
 <script src="https://bauval.org/22/cedb34f49cff801c7096fceb0448c68f"></script>
 </div>
 </div>
@@ -85,15 +77,7 @@ atOptions={
 <div class="ad-unit">
 <div class="ad-label">PUBLICIDADE</div>
 <div class="ad-content">
-<script>
-atOptions={
-'key':'ba694a936a85b9bde4a75382d149a247',
-'format':'iframe',
-'height':60,
-'width':468,
-'params':{}
-};
-</script>
+<script>atOptions={'key':'ba694a936a85b9bde4a75382d149a247','format':'iframe','height':60,'width':468,'params':{}};</script>
 <script src="https://bauval.org/22/ba694a936a85b9bde4a75382d149a247"></script>
 </div>
 </div>
@@ -102,15 +86,7 @@ atOptions={
 <div class="ad-unit">
 <div class="ad-label">PUBLICIDADE</div>
 <div class="ad-content">
-<script>
-atOptions={
-'key':'d24451dc3c33808720e967eedaa94842',
-'format':'iframe',
-'height':250,
-'width':300,
-'params':{}
-};
-</script>
+<script>atOptions={'key':'d24451dc3c33808720e967eedaa94842','format':'iframe','height':250,'width':300,'params':{}};</script>
 <script src="https://bauval.org/22/d24451dc3c33808720e967eedaa94842"></script>
 </div>
 </div>
@@ -119,15 +95,7 @@ atOptions={
 <div class="ad-unit">
 <div class="ad-label">PUBLICIDADE</div>
 <div class="ad-content">
-<script>
-atOptions={
-'key':'da12e8c76e276a0049dd2b262f5916ae',
-'format':'iframe',
-'height':50,
-'width':320,
-'params':{}
-};
-</script>
+<script>atOptions={'key':'da12e8c76e276a0049dd2b262f5916ae','format':'iframe','height':50,'width':320,'params':{}};</script>
 <script src="https://bauval.org/22/da12e8c76e276a0049dd2b262f5916ae"></script>
 </div>
 </div>
@@ -136,15 +104,7 @@ atOptions={
 <div class="ad-unit">
 <div class="ad-label">PUBLICIDADE</div>
 <div class="ad-content">
-<script>
-atOptions={
-'key':'8b48f5cb3830c50398a59600179ff9b1',
-'format':'iframe',
-'height':90,
-'width':728,
-'params':{}
-};
-</script>
+<script>atOptions={'key':'8b48f5cb3830c50398a59600179ff9b1','format':'iframe','height':90,'width':728,'params':{}};</script>
 <script src="https://bauval.org/22/8b48f5cb3830c50398a59600179ff9b1"></script>
 </div>
 </div>
@@ -153,15 +113,7 @@ atOptions={
 <div class="ad-unit">
 <div class="ad-label">PUBLICIDADE</div>
 <div class="ad-content">
-<script>
-atOptions={
-'key':'12533d47fd8333dfa43cb1f40c63bd55',
-'format':'iframe',
-'height':600,
-'width':160,
-'params':{}
-};
-</script>
+<script>atOptions={'key':'12533d47fd8333dfa43cb1f40c63bd55','format':'iframe','height':600,'width':160,'params':{}};</script>
 <script src="https://bauval.org/22/12533d47fd8333dfa43cb1f40c63bd55"></script>
 </div>
 </div>
@@ -173,21 +125,18 @@ PARABÉNS! Recebeste mais um dia VIP!
 <section class="finish-box" id="finishBox">
 <h2>CONTAGEM CONCLUÍDA!</h2>
 <p>O período de cinco minutos terminou.</p>
-<button type="button" class="reward-button" id="rewardButton">
-GANHAR 1 DIA VIP
-</button>
+<button type="button" class="reward-button" id="rewardButton">GANHAR 1 DIA VIP</button>
 <p id="rewardStatus">Podes solicitar a tua recompensa.</p>
 </section>
 
 <a class="back" href="/painel.html">VOLTAR AO PAINEL VIP</a>
-
 <footer>NEXUS MUSIC VIP © 2026</footer>
 </main>
 
 <script>
 (function(){
 
-const API_BASE='https://gabriel-dicke-person-bond.trycloudflare.com';
+const API_BASE='https://originally-perform-sustained-biggest.trycloudflare.com';
 
 const timer=document.getElementById('timer');
 const status=document.getElementById('status');
@@ -203,14 +152,12 @@ let token=null;
 let remaining=DURATION;
 let interval=null;
 let lastTime=Date.now();
-
 let recompensaConfirmada=false;
 let cicloIniciado=false;
 let iniciandoCiclo=false;
 
 function formatTime(s){
-return String(Math.floor(s/60)).padStart(2,'0')+':'+
-String(s%60).padStart(2,'0');
+return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
 }
 
 function render(){
@@ -250,11 +197,10 @@ remaining=Math.max(0,remaining-elapsed);
 
 render();
 
-if(remaining<=0){
-pararContagem();
-}
+if(remaining<=0)pararContagem();
 
 },250);
+
 }
 
 async function iniciarCiclo(){
@@ -278,17 +224,15 @@ body:JSON.stringify({id})
 
 const d=await r.json();
 
-if(!r.ok||!d.sucesso){
+if(!r.ok||!d.sucesso)
 throw new Error(d.erro||'Não foi possível iniciar.');
-}
 
 token=d.token;
 remaining=DURATION;
 cicloIniciado=true;
-
 rewardButton.disabled=false;
-rewardStatus.textContent='Aguarda a conclusão da contagem.';
 
+rewardStatus.textContent='Aguarda a conclusão da contagem.';
 render();
 iniciarContagem();
 
@@ -302,6 +246,7 @@ console.error('Erro ao iniciar ciclo:',e);
 iniciandoCiclo=false;
 
 }
+
 }
 
 async function cancelarCiclo(){
@@ -315,8 +260,8 @@ const t=token;
 token=null;
 cicloIniciado=false;
 remaining=DURATION;
-
 finishBox.style.display='none';
+
 render();
 
 try{
@@ -335,6 +280,7 @@ console.error('Erro ao cancelar ciclo:',e);
 }
 
 status.textContent='Ciclo cancelado. Ao regressar, começa novamente.';
+
 }
 
 rewardButton.addEventListener('click',async function(){
@@ -356,14 +302,12 @@ body:JSON.stringify({id,token})
 
 const d=await r.json();
 
-if(!r.ok||!d.sucesso){
+if(!r.ok||!d.sucesso)
 throw new Error(d.erro||'Não foi possível entregar a recompensa.');
-}
 
 recompensaConfirmada=true;
 cicloIniciado=false;
 token=null;
-
 finishBox.style.display='none';
 successMessage.style.display='block';
 
@@ -376,7 +320,6 @@ setTimeout(function(){
 successMessage.style.display='none';
 recompensaConfirmada=false;
 remaining=DURATION;
-
 render();
 iniciarCiclo();
 
@@ -386,7 +329,6 @@ iniciarCiclo();
 
 rewardButton.disabled=false;
 rewardStatus.textContent=e.message;
-
 console.error('Erro na recompensa:',e);
 
 }
@@ -423,5 +365,6 @@ iniciarCiclo();
 
 })();
 </script>
+
 </body>
 </html>
