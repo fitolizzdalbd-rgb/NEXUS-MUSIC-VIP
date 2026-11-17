@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -5,8 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#0b0b0f">
   <title>NEXUS MUSIC</title>
+
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
       background: #0b0b0f;
       color: white;
@@ -17,18 +24,46 @@
       align-items: center;
       padding: 20px;
     }
-    .container { width: 100%; max-width: 420px; }
-    .logo { text-align: center; margin-bottom: 35px; }
-    .logo-icon { color: #f0142f; font-size: 48px; }
-    .logo h1 { font-size: 29px; letter-spacing: 3px; }
-    .logo p { color: #92929b; font-size: 13px; margin-top: 9px; }
+
+    .container {
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+
+    .logo-icon {
+      color: #f0142f;
+      font-size: 48px;
+    }
+
+    .logo h1 {
+      font-size: 29px;
+      letter-spacing: 3px;
+    }
+
+    .logo p {
+      color: #92929b;
+      font-size: 13px;
+      margin-top: 9px;
+    }
+
     .panel {
       background: #15151c;
       border: 1px solid #292933;
       border-radius: 17px;
       padding: 25px;
     }
-    label { display: block; font-size: 13px; margin-bottom: 10px; }
+
+    label {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
     input {
       width: 100%;
       padding: 16px;
@@ -39,7 +74,11 @@
       font-size: 15px;
       outline: none;
     }
-    input:focus { border-color: #f0142f; }
+
+    input:focus {
+      border-color: #f0142f;
+    }
+
     button {
       width: 100%;
       padding: 16px;
@@ -52,7 +91,11 @@
       margin-top: 17px;
       cursor: pointer;
     }
-    button:disabled { opacity: .6; }
+
+    button:disabled {
+      opacity: .6;
+    }
+
     .message {
       margin-top: 15px;
       color: #ff7373;
@@ -60,6 +103,7 @@
       text-align: center;
       min-height: 18px;
     }
+
     .ad-area {
       width: 100%;
       min-height: 100px;
@@ -67,6 +111,7 @@
       text-align: center;
       overflow: hidden;
     }
+
     .footer {
       text-align: center;
       color: #777782;
@@ -75,8 +120,10 @@
     }
   </style>
 </head>
+
 <body>
   <main class="container">
+
     <header class="logo">
       <div class="logo-icon">♫</div>
       <h1>NEXUS MUSIC</h1>
@@ -85,52 +132,70 @@
 
     <section class="panel">
       <form id="accessForm">
+
         <label for="whatsappId">ID DO WHATSAPP</label>
+
         <input
           id="whatsappId"
           type="text"
           placeholder="Coloca o teu ID aqui"
           autocomplete="off"
+          inputmode="numeric"
+          maxlength="20"
           required
         >
-        <button id="accessButton" type="submit">ACESSAR</button>
-        <p class="message" id="message"></p>
+
+        <button id="accessButton" type="submit">
+          ACESSAR
+        </button>
+
+        <p class="message" id="message" aria-live="polite"></p>
+
       </form>
     </section>
 
-    <!-- ANUNCIO ADSTERRA -->
+    <!-- ANÚNCIO ADSTERRA -->
     <div class="ad-area">
       <script async="async" data-cfasync="false"
         src="https://bauval.org/21/22fbee67b7db5c60edb54037fe2af0cb"></script>
       <div id="container-22fbee67b7db5c60edb54037fe2af0cb"></div>
     </div>
-    <!-- FIM DO ANUNCIO -->
+    <!-- FIM DO ANÚNCIO -->
 
     <footer class="footer">
       NEXUS MUSIC © 2026 — TODOS OS DIREITOS RESERVADOS
     </footer>
+
   </main>
 
   <script>
-    document.getElementById('accessForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-
-      const id = document.getElementById('whatsappId').value.trim();
+    (function () {
+      const form = document.getElementById('accessForm');
+      const input = document.getElementById('whatsappId');
       const message = document.getElementById('message');
       const button = document.getElementById('accessButton');
 
-      if (!/^[0-9]+$/.test(id)) {
-        message.textContent = 'Introduz um ID válido.';
-        return;
-      }
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
 
-      localStorage.setItem('nexus_user_id', id);
+        const id = input.value.trim();
 
-      button.disabled = true;
-      button.textContent = 'A ENTRAR...';
+        if (!/^[0-9]{6,20}$/.test(id)) {
+          message.textContent =
+            'Introduz um ID válido, com 6 a 20 números.';
+          return;
+        }
 
-      window.location.href = '/painel.html';
-    });
+        localStorage.setItem('nexus_user_id', id);
+
+        button.disabled = true;
+        button.textContent = 'A ENTRAR...';
+        message.textContent = '';
+
+        window.location.href = '/painel.html';
+      });
+    })();
   </script>
+
 </body>
 </html>
