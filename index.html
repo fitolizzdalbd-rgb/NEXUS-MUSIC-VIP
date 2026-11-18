@@ -5,7 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#0b0b0f">
-  <title>NEXUS MUSIC</title>
+  <meta name="description" content="NEXUS MUSIC VIP - Acede à tua conta VIP.">
+  <title>NEXUS MUSIC VIP</title>
 
   <style>
     * {
@@ -94,6 +95,7 @@
 
     button:disabled {
       opacity: .6;
+      cursor: not-allowed;
     }
 
     .message {
@@ -158,6 +160,7 @@
     <div class="ad-area">
       <script async="async" data-cfasync="false"
         src="https://bauval.org/21/22fbee67b7db5c60edb54037fe2af0cb"></script>
+
       <div id="container-22fbee67b7db5c60edb54037fe2af0cb"></div>
     </div>
     <!-- FIM DO ANÚNCIO -->
@@ -186,7 +189,13 @@
           return;
         }
 
-        localStorage.setItem('nexus_user_id', id);
+        try {
+          localStorage.setItem('nexus_user_id', id);
+        } catch (error) {
+          message.textContent =
+            'Não foi possível guardar o teu ID. Verifica as definições do navegador.';
+          return;
+        }
 
         button.disabled = true;
         button.textContent = 'A ENTRAR...';
