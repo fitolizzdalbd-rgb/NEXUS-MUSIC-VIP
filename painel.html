@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -111,6 +112,11 @@ header {
   opacity: .8;
 }
 
+.ad-button:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
 .info {
   color: #a0a0aa;
   font-size: 12px;
@@ -169,9 +175,11 @@ footer {
   <div class="divider"></div>
 
   <p class="subtitle">DIAS VIP DISPONÍVEIS</p>
-  <div class="days" id="days">-- dias</div>
+  <div class="days" id="days">A consultar...</div>
 
-  <p class="subtitle" id="expiry">Validade: a consultar</p>
+  <p class="subtitle" id="expiry">
+    A verificar validade...
+  </p>
 </section>
 
 <section class="card">
@@ -224,8 +232,16 @@ footer {
 </div>
 
 <script>
+/* ==================================
+   CONFIGURAÇÃO DA API NEXUS
+================================== */
+
 const API_BASE =
-  'http://node.modz.ink:25566';
+  'https://nexus-vip-api.fitolizzdalbd.workers.dev';
+
+/* ==================================
+   ELEMENTOS DO PAINEL
+================================== */
 
 const id = localStorage.getItem('nexus_user_id');
 
@@ -235,24 +251,42 @@ const expiryElement = document.getElementById('expiry');
 const rewardNotice = document.getElementById('rewardNotice');
 const adButton = document.getElementById('adButton');
 
+/* ==================================
+   VERIFICAÇÃO DO UTILIZADOR
+================================== */
+
 if (!id || !/^[0-9]{6,20}$/.test(id)) {
+
   window.location.href = '/';
+
 } else {
+
   userElement.textContent = id;
 
-  if (localStorage.getItem('nexus_vip_reward_notice') === '1') {
+  if (
+    localStorage.getItem('nexus_vip_reward_notice') === '1'
+  ) {
     rewardNotice.style.display = 'block';
-    localStorage.removeItem('nexus_vip_reward_notice');
+
+    localStorage.removeItem(
+      'nexus_vip_reward_notice'
+    );
   }
 
   consultarVIP();
 }
 
+/* ==================================
+   CONSULTAR ESTADO VIP
+================================== */
+
 async function consultarVIP() {
+
   daysElement.textContent = 'A consultar...';
   expiryElement.textContent = 'A verificar validade...';
 
   try {
+
     const resposta = await fetch(
       API_BASE + '/api/vip?id=' + encodeURIComponent(id),
       {
@@ -265,59 +299,120 @@ async function consultarVIP() {
     );
 
     if (!resposta.ok) {
-      throw new Error('Servidor respondeu: HTTP ' + resposta.status);
+      throw new Error(
+        'Erro HTTP: ' + resposta.status
+      );
     }
 
     const dados = await resposta.json();
 
-    if (!dados.sucesso) {
-      throw new Error(dados.erro || 'Erro na consulta VIP.');
+    if (dados.sucesso !== true) {
+      throw new Error(
+        dados.erro || 'Não foi possível consultar a conta VIP.'
+      );
     }
 
     const dias = Number(dados.dias);
 
     if (!Number.isFinite(dias)) {
-      throw new Error('O servidor devolveu um número de dias inválido.');
+      throw new Error(
+        'Número de dias inválido recebido do servidor.'
+      );
     }
+
+    /* Mostrar dias disponíveis */
 
     daysElement.textContent =
       dias + (dias === 1 ? ' dia' : ' dias');
 
+    /* Mostrar validade */
+
     if (dados.ativo && dados.expiraEm) {
-      const data = new Date(dados.expiraEm);
 
-      const formatada = new Intl.DateTimeFormat('pt-MZ', {
-        dateStyle: 'long',
-        timeStyle: 'short',
-        timeZone: 'Africa/Maputo'
-      }).format(data);
+      const data = new Date(
+        Number(dados.expiraEm)
+      );
 
-      expiryElement.textContent = 'Validade até: ' + formatada;
+      if (Number.isNaN(data.getTime())) {
+        throw new Error('Data de expiração inválida.');
+      }
+
+      const formatada = new Intl.DateTimeFormat(
+        'pt-MZ',
+        {
+          dateStyle: 'long',
+          timeStyle: 'short',
+          timeZone: 'Africa/Maputo'
+        }
+      ).format(data);
+
+      expiryElement.textContent =
+        'Validade até: ' + formatada;
+
     } else {
-      expiryElement.textContent = 'VIP expirado ou inactivo.';
+
+      expiryElement.textContent =
+        'VIP expirado ou inactivo.';
+
     }
 
   } catch (erro) {
-    console.error('Erro ao consultar VIP:', erro);
+
+    console.error(
+      'Erro ao consultar VIP:',
+      erro
+    );
 
     daysElement.textContent = '-- dias';
+
     expiryElement.textContent =
       'Erro: ' + (erro.message || 'Falha desconhecida');
+
   }
 }
 
+/* ==================================
+   BOTÃO DE ANÚNCIOS
+================================== */
+
 adButton.addEventListener('click', function () {
+
   window.location.href = '/anuncio.html';
+
 });
 
+/* ==================================
+   ATUALIZAÇÃO AUTOMÁTICA
+================================== */
+
 setInterval(function () {
+
   if (id && /^[0-9]{6,20}$/.test(id)) {
     consultarVIP();
   }
+
 }, 60000);
 
-window.addEventListener('pageshow', consultarVIP);
-window.addEventListener('focus', consultarVIP);
+/* ==================================
+   ATUALIZAR AO VOLTAR À PÁGINA
+================================== */
+
+window.addEventListener('pageshow', function () {
+
+  if (id && /^[0-9]{6,20}$/.test(id)) {
+    consultarVIP();
+  }
+
+});
+
+window.addEventListener('focus', function () {
+
+  if (id && /^[0-9]{6,20}$/.test(id)) {
+    consultarVIP();
+  }
+
+});
+
 </script>
 
 </body>
